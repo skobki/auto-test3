@@ -6,6 +6,8 @@ import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.*;
@@ -71,6 +73,27 @@ public class WebDriverFactory {
                 optionsFirefox.addArguments("-private");
                 logger.info("Драйвер для Mozilla Firefox");
                 return new FirefoxDriver(optionsFirefox);
+            case "edge":
+                WebDriverManager.edgedriver().setup();
+                EdgeOptions optionsEdge = new EdgeOptions();
+                switch (strategyName) {
+                    case "NORMAL":
+                        optionsEdge.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+                        break;
+                    case "EAGER":
+                        optionsEdge.setPageLoadStrategy(PageLoadStrategy.EAGER);
+                        break;
+                    case "NONE":
+                        optionsEdge.setPageLoadStrategy(PageLoadStrategy.NONE);
+                        break;
+                    default:
+                        throw new RuntimeException("Неправильное имя стратегии загрузки страницы: используйте NORMAL/EAGER/NONE");
+                }
+                optionsEdge.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
+                optionsEdge.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.DISMISS);
+                optionsEdge.addArguments("-inprivate");
+                optionsEdge.addArguments("--start-maximized");
+                return new EdgeDriver(optionsEdge);
             default:
                 throw new RuntimeException("Неправильное имя браузера: используйте chrome/firefox");
         }
