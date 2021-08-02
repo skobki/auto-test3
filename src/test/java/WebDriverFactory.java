@@ -6,6 +6,7 @@ import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -43,7 +44,9 @@ public class WebDriverFactory {
                 optionsChrome.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
                 //5.4. Открытие браузера в режиме инкогнито + фулскрин
                 optionsChrome.addArguments("--start-maximized");
-                optionsChrome.addArguments("--incognito");
+                //optionsChrome.addArguments("--incognito");
+                //Headless mode для printToPdf
+                //optionsChrome.addArguments("--headless");
                 logger.info("Драйвер для Google Chrome");
                 return new ChromeDriver(optionsChrome);
             case "firefox":
